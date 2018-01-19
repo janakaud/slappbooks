@@ -1,0 +1,83 @@
+@import "style/styles";
+@import "~@blueprintjs/core/dist/blueprint.css";
+
+body {
+  font-family: Camphor, 'Open Sans', 'Segoe UI', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 0.8rem !important;
+  font-weight: 300;
+  overflow: scroll;
+  height: 100%;
+  width: 100%;
+  color: #6b7c93;
+  text-emphasis-color: black;
+}
+
+button:focus {
+  outline: 0;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+
+.gone {
+  display: none !important;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.panel {
+  width: 70%;
+  margin: 0 auto;
+  height: 50px;
+}
+
+.topnav {
+  background-color: #6b7c93;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #313942;
+  color: white;
+}
+
+.align-lower {
+  margin-top: 25px;
+}
+
+.relativePosition {
+  width: 100%;
+  overflow: auto;
+}

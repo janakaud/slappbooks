@@ -1,0 +1,5 @@
+syntax: glob
+*.css
+*.css.map
+*/node_modules/
+.idea
