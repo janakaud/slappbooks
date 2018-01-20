@@ -15,11 +15,61 @@ class TransactionService {
         return axios.post(url, params)
     }
 
+    createTransactionWithCurrencyDifference(transactions, conversions) {
+        let transactionsToCommit = [];
+        transactions.forEach(transaction => {
+            transactionsToCommit.push(transaction.getTransaction());
+        });
+
+        let postObject = {
+            transactions : transactionsToCommit,
+            conversionDetails : conversions
+        };
+
+        let url = this.baseURL + "/createTransactionWithCurrencyDifference";
+        return this.post(url, postObject)
+            .then(response => response.data)
+            .then(data => {
+                if(!data.ERROR) {
+                    return data;
+                } else {
+                    return null;
+                }
+            })
+    }
+
+    updateTransaction(transactions) {
+        let url = this.baseURL + "/updateTransaction";
+        return this.post(url, transactions)
+            .then(response => response.data)
+            .then(data => {
+                if(!data.ERROR) {
+                    return data;
+                } else {
+                    return null;
+                }
+            })
+    };
+
+    deleteTransaction(setId) {
+        let postObject = {setId: setId};
+        let url = this.baseURL + "/deleteTransaction";
+        return this.post(url, postObject)
+            .then(response => response.data)
+            .then(data => {
+                if(!data.ERROR) {
+                    return data;
+                } else {
+                    return null;
+                }
+            })
+    }
+
     createTransaction(transactions) {
         let transactionsToCommit = [];
         transactions.forEach(transaction => {
             transactionsToCommit.push(transaction.getTransaction());
-        })
+        });
 
         var url = this.baseURL + "/addTransaction";
         return this.post(url, transactionsToCommit)

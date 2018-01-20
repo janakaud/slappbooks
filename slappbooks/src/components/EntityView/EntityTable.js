@@ -99,104 +99,97 @@ class EntityTable extends React.Component {
         })
     };
 
+    refresh  =() => {
+        this.setState({loading: true});
+        transactionService.getTransactions(this.state.entityName, 0, 5, [], [], (res) => {
+            let values = res.data.rows;
+            values.forEach(key => {
+                key.amount = key.isCredit ? "(" + parseFloat(key.amount) + ")" : parseFloat(key.amount);
+                key.date = moment(key.date).format('YYYY-MM-DD');
+            });
+            this.setState({
+                data: values,
+                pages: res.data.pages,
+                loading: false
+            })
+        });
+    };
+
     render() {
         return (
             <div className={styles.visible}>
-                {/*<Dialog
-                    iconName="dollar"
-                    hasBackdrop={false}
-                    className={"pt-popover-content-sizing"}
-                    isOpen={this.state.isOpen}
-                    onClose={this.toggleDialog}
-                    title="Transaction Snapshot"
-                >
-                    <div className="pt-dialog-body">
-                        {this.generateDialogView()}
-                    </div>
-                    <div className="pt-dialog-footer">
-                        <div className="pt-dialog-footer-actions">
-                            <Button
-                                className={"pt-intent-success"}
-                                text="Update" />
-                            <Button
-                                className={"pt-button pt-intent-danger"}
-                                onClick={this.toggleDialog}
-                                text="Close"
-                            />
-                        </div>
-                    </div>
-                </Dialog>*/}
                 <UpdateView handleCloseCallback={this.handleClose} clickCallback={this.clickCallBack} isOpen={this.state.isOpen} setId={this.state.setId} clicked={this.state.clicked} entityList={this.props.entityList}/>
                 <div className="pt-card pt-elevation-3">
                     <h6 className="pt-icon">{this.state.entityName}</h6>
+                    <button type="button"  className="pt-button pt-small pt-icon-refresh refresh" onClick={this.refresh}></button>
+
                     <ReactTable
-                        data={this.state.data}
-                        pages={this.state.pages}
-                        columns={[
-                            {
-                                columns: [
-                                    {
-                                        Header: "Date",
-                                        accessor: "date",
-                                        maxWidth: 100
-                                    },
-                                    {
-                                        Header: "Check No",
-                                        accessor: "checkNo",
-                                        maxWidth: 100
-                                    },
-                                    {
-                                        Header: "Voucher No",
-                                        accessor: "voucherNo",
-                                        maxWidth: 100
-                                    },
-                                    {
-                                        Header: "Notes",
-                                        accessor: "notes"
-                                    },
-                                    {
-                                        Header: "R",
-                                        accessor: "reconcile",
-                                        maxWidth: 40
-                                    },
-                                    {
-                                        Header: 'Amount',
-                                        maxWidth: 300,
-                                        accessor: "amount"
-                                    },
-                                    {
-                                        Header: "setId",
-                                        accessor: "setId",
-                                        show: false
-                                    }
-                                ]
-                            }
-                        ]}
-                        getTrProps={this.onRowClick}
-                        defaultPageSize={5}
-                        className="-striped -highlight"
-                        loading={this.state.loading}
-                        showPagination={true}
-                        showPaginationTop={false}
-                        showPaginationBottom={true}
-                        pageSizeOptions={[5, 10, 20, 25, 50, 100]}
-                        manual
-                        onFetchData={(state, instance) => {
-                            this.setState({loading: true});
-                            transactionService.getTransactions(this.state.entityName, state.page, state.pageSize, state.sorted, state.filtered, (res) => {
-                                let values = res.data.rows;
-                                values.forEach(key => {
-                                    key.amount = key.isCredit ? "(" + parseFloat(key.amount) + ")" : parseFloat(key.amount);
-                                    key.date = moment(key.date).format('YYYY-MM-DD');
-                                });
-                                this.setState({
-                                    data: values,
-                                    pages: res.data.pages,
-                                    loading: false
-                                })
+                    data={this.state.data}
+                    pages={this.state.pages}
+                    columns={[
+                        {
+                            columns: [
+                                {
+                                    Header: "Date",
+                                    accessor: "date",
+                                    maxWidth: 100
+                                },
+                                {
+                                    Header: "Check No",
+                                    accessor: "checkNo",
+                                    maxWidth: 100
+                                },
+                                {
+                                    Header: "Voucher No",
+                                    accessor: "voucherNo",
+                                    maxWidth: 100
+                                },
+                                {
+                                    Header: "Notes",
+                                    accessor: "notes"
+                                },
+                                {
+                                    Header: "R",
+                                    accessor: "reconcile",
+                                    maxWidth: 40
+                                },
+                                {
+                                    Header: 'Amount',
+                                    maxWidth: 300,
+                                    accessor: "amount"
+                                },
+                                {
+                                    Header: "setId",
+                                    accessor: "setId",
+                                    show: false
+                                }
+                            ]
+                        }
+                    ]}
+                    getTrProps={this.onRowClick}
+                    defaultPageSize={5}
+                    className="-striped -highlight"
+                    loading={this.state.loading}
+                    showPagination={true}
+                    showPaginationTop={false}
+                    showPaginationBottom={true}
+                    pageSizeOptions={[5, 10, 20, 25, 50, 100]}
+                    manual
+                    onFetchData={(state, instance) => {
+                        this.setState({loading: true});
+                        transactionService.getTransactions(this.state.entityName, state.page, state.pageSize, state.sorted, state.filtered, (res) => {
+                            let values = res.data.rows;
+                            values.forEach(key => {
+                                key.amount = key.isCredit ? "(" + parseFloat(key.amount) + ")" : parseFloat(key.amount);
+                                key.date = moment(key.date).format('YYYY-MM-DD');
                             });
-                        }}
-                    />
+                            this.setState({
+                                data: values,
+                                pages: res.data.pages,
+                                loading: false
+                            })
+                        });
+                    }}/>
                 </div>
             </div>
         );

@@ -3,6 +3,7 @@ import currencyService from "../../../services/CurrencyService";
 import transactionService from "../../../services/TransactionService";
 import ConversionViewBody from "./ConversionViewBody";
 import {Button, Toaster, Position, Intent, Dialog} from "@blueprintjs/core";
+import CurrencyConversion from "../../../models/CurrencyConversion";
 
 /**
  * The class is renders the conversion view. A user will use this view to convert transaction values from one
@@ -79,8 +80,16 @@ class ConversionView  extends React.Component {
 
     submitValue = () => {
         let amounts = this.props.amount.slice();
+        let conversions = [];
         amounts.forEach((val, index) => {
             amounts[index] = this.props.amount[index] * this.state.conversionRates[index];
+            let from = this.state.fromCurrencies[index] !== undefined ? this.state.fromCurrencies[index] : this.state.fromCurrency;
+            let to = this.state.toCurrencies[index] !== undefined ? this.state.toCurrencies[index] : this.state.toCurrency;
+            let conversion = new CurrencyConversion();
+            conversion.fromCurrency = from;
+            conversion.toCurrency = to;
+            conversion.conversionRate = this.state.conversionRates[index];
+            conversions.push(conversion);
         });
         this.setState({
             amount: amounts
@@ -90,7 +99,9 @@ class ConversionView  extends React.Component {
         transactions.forEach((transaction, index) => {
             transaction.amount = amounts[index];
         });
-        transactionService.createTransaction(transactions);
+
+        transactionService.createTransactionWithCurrencyDifference(transactions, conversions)
+        //transactionService.createTransaction(transactions);
         OurToaster.show({message: "Transaction Added Successfully!"});
         this.setState({
             entryCount: 0,

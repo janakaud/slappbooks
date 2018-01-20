@@ -19,7 +19,7 @@ class UpdateView extends React.Component {
             setId: this.props.setId,
             clicked: this.props.clicked,
             entityList: this.props.entityList,
-            loaded: false
+            loaded: false,
         };
     }
 
@@ -45,7 +45,46 @@ class UpdateView extends React.Component {
         }
     };
 
+    updateTransaction = () => {
+        let transactions = this.state.updateTransactions.slice();
+        transactions.forEach(transaction => {
+            transaction.isCredit = transaction.isCredit === "CR";
+            transaction.setId = this.props.setId;
+        });
+        console.log(transactions);
+        transactionService.updateTransaction(transactions);
+        this.handleClose();
+    };
 
+    deleteTransaction = () => {
+        transactionService.deleteTransaction(this.props.setId);
+        this.handleClose();
+    };
+
+    handleEntityChange = (entity, index) => {
+        let transactions = this.state.updateTransactions;
+        transactions[index].entityName = entity;
+        this.setState({
+            updatableTransactions : transactions
+        });
+    };
+
+    handleAmountChange = (amount, index) => {
+        let transactions = this.state.updateTransactions;
+        transactions[index].amount = amount;
+        this.setState({
+            updatableTransactions : transactions
+        });
+    };
+
+    handleCreditChange = (isCredit, index) => {
+        let transactions = this.state.updateTransactions;
+        console.log(isCredit);
+        transactions[index].isCredit = isCredit;
+        this.setState({
+            updatableTransactions : transactions
+        });
+    };
 
     render() {
         this.generateDialogView();
@@ -58,11 +97,20 @@ class UpdateView extends React.Component {
                 onClose={this.handleClose}
                 title="Transaction Snapshot">
                 <div className="pt-dialog-body">
-                    <UpdateViewBody updateTransactions={this.state.updateTransactions} entityList={this.props.entityList} isOpen={this.state.isOpen} setId={this.state.setId} clicked={this.state.clicked} loaded={this.state.loaded}/>
+                    <UpdateViewBody handleEntityChange={this.handleEntityChange}
+                                    handleAmountChange={this.handleAmountChange}
+                                    handleCreditChange={this.handleCreditChange}
+                                    updateTransactions={this.state.updateTransactions}
+                                    entityList={this.props.entityList}
+                                    isOpen={this.state.isOpen}
+                                    setId={this.state.setId}
+                                    clicked={this.state.clicked}
+                                    loaded={this.state.loaded}/>
                 </div>
                 <div className="pt-dialog-footer">
                     <div className="pt-dialog-footer-actions">
-                        <Button className={"pt-intent-success"} text="Update" />
+                        <Button className={"pt-intent-success"} onClick={this.updateTransaction} text="Update" />
+                        <Button className={"pt-button pt-intent-danger"} onClick={this.deleteTransaction} text="Delete"/>
                         <Button className={"pt-button pt-intent-danger"} onClick={this.handleClose} text="Close"/>
                     </div>
                 </div>
