@@ -92,15 +92,18 @@ class TransactionService {
             })
     }
 
-    getTransactions(entity, page, pageSize, sorted, filtered, handleRetrievedTransactions) {
-        var url = this.baseURL + "/getTransactionList";
+    getTransactions(entity, page, pageSize, sorted, filtered, month, year, handleRetrievedTransactions) {
+        let url = this.baseURL + "/getTransactionList";
         let postObject = {
             entity: entity,
             page: page,
             pageSize: pageSize,
             sorted: sorted,
-            filtered: filtered
+            filtered: filtered,
+            month: month,
+            year: year
         };
+
         return this.post(url, postObject)
             .then(response => handleRetrievedTransactions(response))
             .catch(response => console.log(response));
