@@ -19,6 +19,7 @@ class UpdateView extends React.Component {
             setId: this.props.setId,
             clicked: this.props.clicked,
             entityList: this.props.entityList,
+            isConfirmationOpen: false,
             loaded: false,
         };
     }
@@ -28,6 +29,11 @@ class UpdateView extends React.Component {
         this.setState({
                 updateTransactions : []
             })
+    };
+
+    handleSuperClose = () => {
+        this.handleClose();
+        this.closeConfirmation();
     };
 
 
@@ -58,7 +64,20 @@ class UpdateView extends React.Component {
 
     deleteTransaction = () => {
         transactionService.deleteTransaction(this.props.setId);
+        this.closeConfirmation();
         this.handleClose();
+    };
+
+    openConfirmation = () => {
+        this.setState({
+            isConfirmationOpen: true
+        });
+    };
+
+    closeConfirmation = () => {
+        this.setState({
+            isConfirmationOpen: false
+        });
     };
 
     handleEntityChange = (entity, index) => {
@@ -89,32 +108,51 @@ class UpdateView extends React.Component {
     render() {
         this.generateDialogView();
         return(
-            <Dialog
-                iconName="dollar"
-                hasBackdrop={false}
-                className={"pt-popover-content-sizing"}
-                isOpen={this.props.isOpen}
-                onClose={this.handleClose}
-                title="Transaction Snapshot">
-                <div className="pt-dialog-body">
-                    <UpdateViewBody handleEntityChange={this.handleEntityChange}
-                                    handleAmountChange={this.handleAmountChange}
-                                    handleCreditChange={this.handleCreditChange}
-                                    updateTransactions={this.state.updateTransactions}
-                                    entityList={this.props.entityList}
-                                    isOpen={this.state.isOpen}
-                                    setId={this.state.setId}
-                                    clicked={this.state.clicked}
-                                    loaded={this.state.loaded}/>
-                </div>
-                <div className="pt-dialog-footer">
-                    <div className="pt-dialog-footer-actions">
-                        <Button className={"pt-intent-success"} onClick={this.updateTransaction} text="Update" />
-                        <Button className={"pt-button pt-intent-danger"} onClick={this.deleteTransaction} text="Delete"/>
-                        <Button className={"pt-button pt-intent-danger"} onClick={this.handleClose} text="Close"/>
+            <div>
+                <Dialog
+                    iconName="dollar"
+                    hasBackdrop={true}
+                    className={"pt-popover-content-sizing"}
+                    isOpen={this.state.isConfirmationOpen}
+                    onClose={this.handleClose}
+                    title="Confirm Action">
+                    <div className="pt-dialog-body">
+                        <p>Are you sure you want to delete the transaction?</p>
                     </div>
-                </div>
-            </Dialog>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button className={"pt-intent-success"} onClick={this.deleteTransaction} text="Yes" />
+                            <Button className={"pt-button pt-intent-danger"} onClick={this.handleSuperClose} text="No"/>
+                        </div>
+                    </div>
+                </Dialog>
+                <Dialog
+                    iconName="dollar"
+                    hasBackdrop={true}
+                    className={"pt-popover-content-sizing"}
+                    isOpen={this.props.isOpen}
+                    onClose={this.handleClose}
+                    title="Transaction Snapshot">
+                    <div className="pt-dialog-body">
+                        <UpdateViewBody handleEntityChange={this.handleEntityChange}
+                                        handleAmountChange={this.handleAmountChange}
+                                        handleCreditChange={this.handleCreditChange}
+                                        updateTransactions={this.state.updateTransactions}
+                                        entityList={this.props.entityList}
+                                        isOpen={this.state.isOpen}
+                                        setId={this.state.setId}
+                                        clicked={this.state.clicked}
+                                        loaded={this.state.loaded}/>
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button className={"pt-intent-success"} onClick={this.updateTransaction} text="Update" />
+                            <Button className={"pt-button pt-intent-danger"} onClick={this.openConfirmation} text="Delete"/>
+                            <Button className={"pt-button pt-intent-danger"} onClick={this.handleClose} text="Close"/>
+                        </div>
+                    </div>
+                </Dialog>
+            </div>
         );
     }
 }
