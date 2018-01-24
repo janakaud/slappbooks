@@ -1,17 +1,17 @@
-import React from "react";
-// Import React Table
-import ReactTable from "react-table";
-import "react-table/react-table.css";
-import styles from "../../main.css"
-import transactionService from "../../services/TransactionService";
-/*import {Button, Dialog} from "@blueprintjs/core"*/
-import TransactionBasicRow from "../TransactionView/TransactionRowView/TransactionBasicRow";
+import React from 'react';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+import styles from '../../main.css';
 import moment from 'moment';
-import UpdateView from '../TransactionView/TransactionUpdateView/UpdateView'
+import UpdateView from '../TransactionView/TransactionUpdateView/UpdateView';
+import View from 'react-flexbox';
+import transactionService from '../../services/TransactionService';
 
 /**
- * This represents a transaction of the double entry system
- * @author Malith Jayaweera
+ *  This represents an entity table of the Double Entry system. The table defaults to the current month and current year.
+ *  On refresh the entity is updated with available transactions.
+ *
+ *  @author Malith Jayaweera
  */
 class EntityTable extends React.Component {
     constructor(props) {
@@ -25,7 +25,9 @@ class EntityTable extends React.Component {
             loading: false,
             setId: '',
             clicked: false,
-            updateTransactions: []
+            updateTransactions: [],
+            month: moment().startOf("month").format('MMMM'),
+            year: moment().startOf("month").format('YYYY'),
         };
     }
 
@@ -37,12 +39,6 @@ class EntityTable extends React.Component {
                     clicked: true
                 });
                 this.toggleDialog();
-                /*console.log('A Td Element was clicked!');
-                console.log('it produced this event:', e);
-                console.log('It was in this column:', column);
-                console.log('It was in this row:', rowInfo);
-                console.log('It was in this table instance:', instance);
-                console.log(rowInfo.row.setId);*/
             }
         }
     };
@@ -54,19 +50,6 @@ class EntityTable extends React.Component {
         this.setState({
             clicked: false
         })
-    };
-
-    generateDialogView = () => {
-        if(this.state.isOpen && this.state.clicked) {
-            transactionService.getTransactionObject(this.state.setId, (response) => {
-                let transactions = response.data;
-                this.setState({
-                    updateTransactions: transactions,
-                    clicked: false
-                });
-            });
-        }
-        return this.getContent();
     };
 
     handleEntityChange = (entity, index) => {
@@ -81,27 +64,15 @@ class EntityTable extends React.Component {
         console.log(credit);
     };
 
-    getContent = () => {
-        let content = [];
-        this.state.updateTransactions.forEach( (transaction, index) => {
-            let isCredit;
-            if((transaction.amount).toString().startsWith("(") && transaction.amount.toString().endsWith(")")) transaction.amount = transaction.amount.slice(1, transaction.amount.length-1); isCredit= transaction.isCredit;
-            content.push( <TransactionBasicRow  handleEntityChangeCallBack={this.handleEntityChange}
-                                              handleAmountChangeCallBack={this.handleAmountChange}
-                                              handleCreditChangeCallBack={this.handleCreditChange} key={index} entityList={this.props.entityList} entity={transaction.entityName} amount={transaction.amount} isCredit={isCredit}/>);
-        });
-        return content;
-    };
-
     clickCallBack = () => {
         this.setState({
             clicked: false
         })
     };
 
-    refresh  =() => {
+    refresh  =(month, year) => {
         this.setState({loading: true});
-        transactionService.getTransactions(this.state.entityName, 0, 5, [], [], (res) => {
+        transactionService.getTransactions(this.state.entityName, 0, 5, [], [],month, year, (res) => {
             let values = res.data.rows;
             values.forEach(key => {
                 key.amount = key.isCredit ? "(" + parseFloat(key.amount) + ")" : parseFloat(key.amount);
@@ -115,14 +86,68 @@ class EntityTable extends React.Component {
         });
     };
 
+    handleMonthChange = (event) => {
+        this.setState({
+            month: event.target.value
+        });
+        this.refresh(event.target.value, this.state.year);
+    };
+
+    handleYearChange = (event) => {
+        this.setState({
+            year: event.target.value
+        });
+        this.refresh(this.state.month, event.target.value);
+    };
+
     render() {
         return (
             <div className={styles.visible}>
                 <UpdateView handleCloseCallback={this.handleClose} clickCallback={this.clickCallBack} isOpen={this.state.isOpen} setId={this.state.setId} clicked={this.state.clicked} entityList={this.props.entityList}/>
                 <div className="pt-card pt-elevation-3">
-                    <h6 className="pt-icon">{this.state.entityName}</h6>
-                    <button type="button"  className="pt-button pt-small pt-icon-refresh refresh" onClick={this.refresh}></button>
-
+                    <View auto style={{
+                        flexDirection: 'row-inverse',
+                        padding: 0.2,
+                        alignItems: 'stretch',
+                        justifyContent: 'left'
+                    }}>
+                        <View column width="100px">
+                            <h6 className="pt-button">{this.state.entityName}</h6>
+                        </View>
+                        <View column width="110px">
+                            <label className="pt-label pt-inline" htmlFor="month">
+                                <div className="pt-select pt-inline">
+                                    <select ref="month" defaultValue={this.state.month} onChange={this.handleMonthChange} name="month">
+                                        <option value={"January"}>January</option>
+                                        <option value={"February"}>February</option>
+                                        <option value={"March"}>March</option>
+                                        <option value={"April"}>April</option>
+                                        <option value={"May"}>May</option>
+                                        <option value={"June"}>June</option>
+                                        <option value={"July"}>July</option>
+                                        <option value={"August"}>August</option>
+                                        <option value={"September"}>September</option>
+                                        <option value={"October"}>October</option>
+                                        <option value={"November"}>November</option>
+                                        <option value={"December"}>December</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </View>
+                        <View column>
+                            <label className="pt-label pt-inline" htmlFor="year">
+                                <div className="pt-select pt-inline">
+                                    <select ref="year" defaultValue={this.state.year} onChange={this.handleYearChange} name="year">
+                                        <option value={"2018"}>2018</option>
+                                        <option value={"2017"}>2017</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </View>
+                        <View column width="40px">
+                            <button type="button"  className="pt-button pt-small pt-icon-refresh refresh" onClick={() => this.refresh(this.state.month, this.state.year)}></button>
+                        </View>
+                    </View>
                     <ReactTable
                     data={this.state.data}
                     pages={this.state.pages}
@@ -177,7 +202,7 @@ class EntityTable extends React.Component {
                     manual
                     onFetchData={(state, instance) => {
                         this.setState({loading: true});
-                        transactionService.getTransactions(this.state.entityName, state.page, state.pageSize, state.sorted, state.filtered, (res) => {
+                        transactionService.getTransactions(this.state.entityName, state.page, state.pageSize, state.sorted, state.filtered, this.state.month, this.state.year, (res) => {
                             let values = res.data.rows;
                             values.forEach(key => {
                                 key.amount = key.isCredit ? "(" + parseFloat(key.amount) + ")" : parseFloat(key.amount);

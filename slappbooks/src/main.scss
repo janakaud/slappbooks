@@ -87,3 +87,7 @@ button:focus {
   width: 100%;
   overflow: auto;
 }
+
+.on-top {
+  z-index:9000;
+}

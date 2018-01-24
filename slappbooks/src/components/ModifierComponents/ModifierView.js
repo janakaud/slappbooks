@@ -1,11 +1,13 @@
-import React from "react";
-import {Tab2, Tabs2} from "@blueprintjs/core";
-import AddEntityComponent from "./AdderComponents/AddEntityComponent";
-import AddTransactionComponent from "./AdderComponents/AddTransactionComponent";
-import ConversionView from "./ConversionView/ConversionView";
+import React from 'react';
+import {Tab2, Tabs2} from '@blueprintjs/core';
+import AddEntityComponent from './AdderComponents/AddEntityComponent';
+import AddTransactionComponent from './AdderComponents/AddTransactionComponent';
+import ConversionView from './ConversionView/ConversionView';
+import ViewEntityComponent from './AdderComponents/ViewEntityComponent';
+
 /**
  * The class is responsible for rendering the Modifier view. A user can modifiy a transaction, entity using this view.
- * It encapsulates @AddEntityComponent and  @AddTransactionComponent.
+ * It encapsulates @AddEntityComponent and  @AddTransactionComponent
  *
  * @author Malith Jayaweera
  */
@@ -91,6 +93,9 @@ class ModifierView extends React.Component {
                             }/>
                             <Tab2 id="addEntity" title="Add Entity" panel={
                                 <AddEntityComponent/>
+                            }/>
+                            <Tab2 id="viewEntity" title="View Entity" panel={
+                                <ViewEntityComponent entityObjects={this.props.entityObjects}/>
                             }/>
                         </Tabs2>
                     </div>

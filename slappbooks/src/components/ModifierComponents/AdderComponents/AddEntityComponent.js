@@ -1,10 +1,12 @@
-import React from "react";
+import React from 'react';
 import View from 'react-flexbox';
-import transactionService from "../../../services/TransactionService";
+import {Intent, Position, Toaster} from '@blueprintjs/core';
+import transactionService from '../../../services/TransactionService';
 
 /**
- * This represents an add entity component
- * @author Malith Jayaweera
+ *  This represents the add entity component. The component can be used for adding entities to the system
+ *
+ *  @author Malith Jayaweera
  */
 class AddEntityComponent extends React.Component {
 
@@ -13,8 +15,14 @@ class AddEntityComponent extends React.Component {
         let entity = e.target.entityName.value;
         let currency = e.target.currency.value;
         let entityType = e.target.entityType.value;
-        transactionService.createEntity(entity, currency, entityType);
-        this.render();
+
+        if(entity === '') {
+            OurToaster.show({message: "Entity Name Cannot be Empty!"});
+        } else {
+            transactionService.createEntity(entity, currency, entityType);
+            OurToaster.show({message: "Entity Added Successfully!"});
+            this.render();
+        }
     };
 
     render() {
@@ -71,7 +79,7 @@ class AddEntityComponent extends React.Component {
                         </View>
                     </View>
                     <View>
-                        <input className="pt-button pt-intent-success" type="submit"/>
+                        <button className="pt-button pt-icon-tick-circle pt-intent-success" type="submit">Submit</button>
                     </View>
                 </form>
             </div>
@@ -80,3 +88,9 @@ class AddEntityComponent extends React.Component {
 }
 
 export default AddEntityComponent;
+
+export const OurToaster = Toaster.create({
+    className: "panel align-lower",
+    position: Position.TOP_RIGHT,
+    intent: Intent.PRIMARY
+});

@@ -1,17 +1,16 @@
-import React from "react";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import {Button, Position, Tooltip} from "@blueprintjs/core";
+import React from 'react';
+import {Button, Position, Tooltip} from '@blueprintjs/core';
 import View from 'react-flexbox'
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 /**
  * This represents a full row of the transaction adder element
+ *
  * @author Malith Jayaweera
  *
  */
-
-
 import TransactionBasicRow from "./TransactionBasicRow";
 
 class TransactionFullRow extends React.Component {
@@ -51,7 +50,7 @@ class TransactionFullRow extends React.Component {
                                    handleAmountChangeCallBack={this.props.handleAmountChangeCallBack}
                                    handleCreditChangeCallBack={this.props.handleCreditChangeCallBack} amount={this.props.amount} key={0} entityList={this.props.entityList}/>
                 <View column width="210px">
-                    <DatePicker name={"date"} dateFormat="YYYY-MM-DD" placeholderText={"MM-DD-YYYY"} selected={this.state.startDate} className={"pt-input pt-round pt-datepicker-footer"}
+                    <DatePicker name={"date"} dateFormat="YYYY-MM-DD" placeholderText={"MM-DD-YYYY"} selected={this.state.startDate} className={"pt-input on-top pt-round pt-datepicker-footer"}
                                 onChange={this.handleChange}
                     />;
                 </View>

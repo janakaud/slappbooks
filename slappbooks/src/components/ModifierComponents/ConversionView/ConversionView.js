@@ -1,15 +1,15 @@
-import React from "react";
-import currencyService from "../../../services/CurrencyService";
-import transactionService from "../../../services/TransactionService";
-import ConversionViewBody from "./ConversionViewBody";
-import {Button, Toaster, Position, Intent, Dialog} from "@blueprintjs/core";
-import CurrencyConversion from "../../../models/CurrencyConversion";
+import React from 'react';
+import {Button, Toaster, Position, Intent, Dialog} from '@blueprintjs/core';
+import currencyService from '../../../services/CurrencyService';
+import transactionService from '../../../services/TransactionService';
+import ConversionViewBody from './ConversionViewBody';
+import CurrencyConversion from '../../../models/CurrencyConversion';
 
 /**
- * The class is renders the conversion view. A user will use this view to convert transaction values from one
- * currency to another currency
+ *  The class is renders the conversion view. A user will use this view to convert transaction values from one
+ *  currency to another currency
  *
- * @author Malith Jayaweera
+ *  @author Malith Jayaweera
  */
 class ConversionView  extends React.Component {
 
@@ -21,30 +21,12 @@ class ConversionView  extends React.Component {
             entityList: this.props.entityList,
             toCurrency: "USD",
             fromCurrency: "LKR",
-            toCurrencies: [],
-            fromCurrencies: [],
+            toCurrencies: Array(this.props.entityList.length + 2).fill("USD"),
+            fromCurrencies: Array(this.props.entityList.length + 2).fill("LKR"),
             amount: this.props.amount,
             updatableTransactions: this.props.updatableTransactions
         };
-       /* this.addDefaultCurrencyList();
-        this.convert();*/
     }
-
-    addDefaultCurrencyList = () => {
-        let currencies = [];
-        currencies.length = this.props.entityList.length + 1;
-        currencies.fill(this.state.fromCurrency);
-        this.setState({
-            fromCurrencies: currencies
-        });
-        let newCurrencies = [];
-        newCurrencies.length = this.props.entityList.length + 1;
-        newCurrencies.fill(this.state.toCurrency);
-        this.setState({
-            toCurrencies: newCurrencies
-        });
-    };
-
 
     handleClose = () => {
         this.props.handleCloseCallBack();
@@ -64,11 +46,11 @@ class ConversionView  extends React.Component {
 
     convert = () => {
         this.props.entityList.forEach((entity, index) => {
-            var from = this.state.fromCurrencies[index] !== undefined ? this.state.fromCurrencies[index] : this.state.fromCurrency;
-            var to = this.state.toCurrencies[index] !== undefined ? this.state.toCurrencies[index] : this.state.toCurrency;
+            let from = this.state.fromCurrencies[index] !== undefined ? this.state.fromCurrencies[index] : this.state.fromCurrency;
+            let to = this.state.toCurrencies[index] !== undefined ? this.state.toCurrencies[index] : this.state.toCurrency;
             currencyService.getExchangeRate(from, to, (response) => {
-                var data = response.data;
-                var tempConversionRates = this.state.conversionRates.slice();
+                let data = response.data;
+                let tempConversionRates = this.state.conversionRates.slice();
                 let valueObject = data.hasOwnProperty(from + "_" + to) ? data[from + "_" + to] : 0;
                 tempConversionRates[index] = valueObject.val;
                 this.setState({
@@ -125,8 +107,8 @@ class ConversionView  extends React.Component {
                                         handleToCurrencies={this.handleToCurrencies}
                                         amount={this.props.amount}
                                         conversionRates={this.state.conversionRates}
-                                        toCurrencies={this.props.toCurrencies}
-                                        fromCurrencies={this.props.fromCurrencies}/>
+                                        toCurrencies={this.state.toCurrencies}
+                                        fromCurrencies={this.state.fromCurrencies}/>
                 </div>
                 <div className="pt-dialog-footer">
                     <div className="pt-dialog-footer-actions">

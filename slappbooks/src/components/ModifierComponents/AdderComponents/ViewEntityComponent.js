@@ -1,11 +1,12 @@
 import React from 'react';
 import View from 'react-flexbox';
-import {Intent, Position, Toaster, Button} from '@blueprintjs/core';
+import {Intent, Position, Toaster, Button, Dialog} from '@blueprintjs/core';
 import transactionService from '../../../services/TransactionService';
 
 /**
  *  This represents a @ViewEntityComponent. Entity details can be viewed in this tab mode. It has been designed to be used
  *  with the @ModifierView
+ *
  *  @author Malith Jayaweera
  */
 class ViewEntityComponent extends React.Component {
@@ -15,9 +16,23 @@ class ViewEntityComponent extends React.Component {
             entityObjects : this.props.entityObjects,
             defaultCurrency : '',
             entityType: '',
-            entityName: ''
+            entityName: '',
+            isConfirmationOpen: false
         }
     }
+
+    closeConfirmation = () => {
+        this.setState({
+            isConfirmationOpen: false
+        });
+    };
+
+    openConfirmation = () => {
+        this.setState({
+            isConfirmationOpen: true
+        })
+    };
+
 
     handleEntityChange = (e) => {
         let entityName = e.target.value;
@@ -33,8 +48,12 @@ class ViewEntityComponent extends React.Component {
     };
 
     deleteEntity = () => {
+        this.setState({
+           isConfirmationOpen: true
+        });
         transactionService.deleteEntity(this.state.entityName);
         OurToaster.show({message: "Entity Deleted Successfully!"});
+        this.closeConfirmation();
     };
 
     entityListSelect() {
@@ -46,46 +65,67 @@ class ViewEntityComponent extends React.Component {
         return entityList;
     }
 
+
     render() {
         return(
             <div>
-            <View auto style={{
-                flexDirection: 'row-inverse',
-                padding: 0.2,
-                alignItems: 'stretch',
-                justifyContent: 'left'
-            }}>
-                <View column width="110px">
-                    <label className="pt-label pt-inline"  htmlFor={"entity"}>
-                        Entity
-                        <div className="pt-select">
-                            <select defaultValue={this.state.entity} onChange={e => this.handleEntityChange(e)} name={"entity"} >
-                                {this.entityListSelect()}
-                            </select>
+                <Dialog
+                    iconName="dollar"
+                    hasBackdrop={true}
+                    className={"pt-popover-content-sizing"}
+                    isOpen={this.state.isConfirmationOpen}
+                    onClose={this.closeConfirmation}
+                    title="Confirm Action">
+                    <div className="pt-dialog-body">
+                        <p>Are you sure you want to delete the entity {this.state.entityName}? Deleting the entity
+                        would delete all associated transactions.</p>
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button className={"pt-intent-success"} onClick={this.deleteEntity} text="Yes" />
+                            <Button className={"pt-button pt-intent-danger"} onClick={this.closeConfirmation} text="No"/>
                         </div>
-                    </label>
-                </View>
-                <View column width="420px">
-                    <label className="pt-label pt-inline" htmlFor="type">
-                        Entity Type
-                        <div className="pt-input" name={"type"}>
-                            <input type={"text"} value={this.state.entityType} className={"pt-button"} disabled={true}></input>
-                        </div>
-                    </label>
-                </View>
+                    </div>
+                </Dialog>
                 <View column>
-                    <label className="pt-label pt-inline" htmlFor="currency">
-                        Default Currency
-                        <div className="pt-input" name={"currency"}>
-                            <input type={"text"} value={this.state.defaultCurrency} className={"pt-button"} disabled={true}></input>
-                        </div>
-                    </label>
+                    <View auto style={{
+                        flexDirection: 'row-inverse',
+                        padding: 0.2,
+                        alignItems: 'stretch',
+                        justifyContent: 'left'
+                    }}>
+                        <View column width="110px">
+                            <label className="pt-label pt-inline"  htmlFor={"entity"}>
+                                Entity
+                                <div className="pt-select">
+                                    <select defaultValue={this.state.entity} onChange={e => this.handleEntityChange(e)} name={"entity"} >
+                                        {this.entityListSelect()}
+                                    </select>
+                                </div>
+                            </label>
+                        </View>
+                        <View column width="420px">
+                            <label className="pt-label pt-inline" htmlFor="type">
+                                Entity Type
+                                <div className="pt-input" name={"type"}>
+                                    <input type={"text"} value={this.state.entityType} className={"pt-button"} disabled={true}></input>
+                                </div>
+                            </label>
+                        </View>
+                        <View column>
+                            <label className="pt-label pt-inline" htmlFor="currency">
+                                Default Currency
+                                <div className="pt-input" name={"currency"}>
+                                    <input type={"text"} value={this.state.defaultCurrency} className={"pt-button"} disabled={true}></input>
+                                </div>
+                            </label>
+                        </View>
+                    </View>
+                    <View>
+                        <Button iconName="pt-icon-trash" className={"pt-button pt-intent-danger"} onClick={this.openConfirmation} text={"Delete"} />
+                    </View>
                 </View>
-                <View column width={"30px"}>
-                    <Button iconName="pt-icon-delete" className={"pt-small pt-intent-danger"} onClick={this.deleteEntity} text="Delete" />
-                </View>
-            </View>
-        </div>);
+            </div>);
     }
 
 }

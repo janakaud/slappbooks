@@ -1,6 +1,7 @@
 /**
  * This represents a Currency Conversion object
  *
+ * @author Malith Jayaweera
  */
 class CurrencyConversion {
     constructor(toCurrency, fromCurrency, conversionRate) {

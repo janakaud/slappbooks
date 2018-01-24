@@ -1,6 +1,7 @@
 /**
  * This represents an entity of the double entry system
  *
+ * @author Malith Jayaweera
  */
 class Entity {
     constructor(entityName, entityType, defaultCurrency) {

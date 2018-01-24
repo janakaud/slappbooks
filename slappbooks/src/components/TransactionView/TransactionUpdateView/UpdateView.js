@@ -1,7 +1,7 @@
-import React from "react";
-import transactionService from "../../../services/TransactionService";
-import {Button, Dialog} from "@blueprintjs/core";
-import UpdateViewBody from "./UpdateViewBody"
+import React from 'react';
+import {Button, Dialog} from '@blueprintjs/core';
+import UpdateViewBody from './UpdateViewBody';
+import transactionService from '../../../services/TransactionService';
 
 /**
  * The class generates an update component for a user to update a transaction. A transaction might contain multiple

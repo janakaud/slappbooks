@@ -1,9 +1,10 @@
-import React from "react";
+import React from 'react';
 import View from 'react-flexbox'
 import {NumericInput} from '@blueprintjs/core'
 
 /**
  * This represents an add transaction row
+ *
  * @author Malith Jayaweera
  */
 class TransactionBasicRow extends React.Component {
@@ -41,7 +42,7 @@ class TransactionBasicRow extends React.Component {
         isCredit = e.target.value === 'CR';
         this.setState({
             credit: isCredit
-        })
+        });
         this.props.handleCreditChangeCallBack(e.target.value, this.state.index);
     };
 

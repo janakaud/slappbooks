@@ -1,5 +1,5 @@
-import React from "react";
-import TransactionBasicRow from "../TransactionRowView/TransactionBasicRow";
+import React from 'react';
+import TransactionBasicRow from '../TransactionRowView/TransactionBasicRow';
 
 /**
  * The class generates a body for the UpdateView component. After data has been retrieved the body will be updated to

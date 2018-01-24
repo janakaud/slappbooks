@@ -1,13 +1,12 @@
-import React from "react";
+import React from 'react';
 import View from 'react-flexbox';
-import {EditableText} from "@blueprintjs/core";
-
+import {EditableText} from '@blueprintjs/core';
 
 /**
- * The class is renders the conversion view body. A user will use this view to convert transaction values from one
- * currency to another currency
+ *  The class is renders the conversion view body. A user will use this view to convert transaction values from one
+ *  currency to another currency
  *
- * @author Malith Jayaweera
+ *  @author Malith Jayaweera
  */
 class ConversionViewBody  extends React.Component {
 
@@ -24,13 +23,14 @@ class ConversionViewBody  extends React.Component {
     }
 
     handleToCurrency = (index, e) => {
-        let toCurrencies = this.state.toCurrencies.slice();
+        console.log(this.props.toCurrencies);
+        let toCurrencies = this.props.toCurrencies.slice();
         toCurrencies[index] = e.target.value;
         this.props.handleToCurrencies(toCurrencies);
     };
 
     handleFromCurrency = (index, e) => {
-        let fromCurrencies = this.state.fromCurrencies.slice();
+        let fromCurrencies = this.props.fromCurrencies.slice();
         fromCurrencies[index] = e.target.value;
         this.props.handleFromCurrencies(fromCurrencies);
     };

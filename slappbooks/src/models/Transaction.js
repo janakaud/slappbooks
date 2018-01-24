@@ -1,6 +1,7 @@
 /**
  * This represents a transaction of the double entry system
  *
+ * @author Malith Jayaweera
  */
 class Transaction {
     constructor(date, entityName, checkNo, voucherNo, notes, reconcile="1", amount, isCredit, trId, setId) {
@@ -29,26 +30,6 @@ class Transaction {
             reconcile: this.reconcile,
             setId: this.setId
         }
-    }
-
-    getTransactionDate() {
-        return this.date;
-    }
-
-    getTransactionCheckNo() {
-        return this.checkNo;
-    }
-
-    getTransactionVoucherNo() {
-        return this.voucherNo;
-    }
-
-    getNotes() {
-        return this.notes;
-    }
-
-    getAmount() {
-        return this.amount;
     }
 }
 

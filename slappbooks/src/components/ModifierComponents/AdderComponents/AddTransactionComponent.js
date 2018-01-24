@@ -1,18 +1,19 @@
-import React from "react";
+import React from 'react';
 import View from 'react-flexbox';
-import TransactionBasicRow from '../../TransactionView/TransactionRowView/TransactionBasicRow';
-import TransactionFullRow from '../../TransactionView/TransactionRowView/TransactionFullRow';
-import {Intent, Position, Toaster} from "@blueprintjs/core";
-import Transaction from "../../../models/Transaction";
-import transactionService from "../../../services/TransactionService";
 import md5 from 'md5';
 import moment from 'moment';
+import {Intent, Position, Toaster} from '@blueprintjs/core';
+import TransactionBasicRow from '../../TransactionView/TransactionRowView/TransactionBasicRow';
+import TransactionFullRow from '../../TransactionView/TransactionRowView/TransactionFullRow';
+import Transaction from '../../../models/Transaction';
+import transactionService from '../../../services/TransactionService';
+
 
 /**
- * The class is responsible for rendering the add transaction view. A user can add a transaction using this view.
- * It encapsulates @AddTransaction.
+ *  The class is responsible for rendering the Add Transaction view. A user can add a transaction using this view.
+ *  It encapsulates @AddTransactionComponent
  *
- * @author Malith Jayaweera
+ *  @author Malith Jayaweera
  */
 class AddTransactionComponent extends React.Component {
     constructor(props) {
@@ -21,7 +22,8 @@ class AddTransactionComponent extends React.Component {
             entityList : this.props.entityList,
             entryCount : 0,
             entityObjects : this.props.entityObjects,
-            entities: []
+            entities: [],
+            amount: ''
         }
     }
 
@@ -111,19 +113,19 @@ class AddTransactionComponent extends React.Component {
             OurToaster.show({message: "Transaction Added Successfully!"});
             this.setState({
                 entryCount: 0,
-                amountValue: ''
-            })
+                amount: 0
+            });
         }
 
     };
 
     getEntityDefaultCurrency = (entity) => {
-        var currency = 0;
+        let currency = 0;
         this.props.entityObjects.forEach(object => {
             if (object._entityName === entity) {
                 currency = object._defaultCurrency;
             }
-        })
+        });
         return currency;
     };
 
@@ -153,6 +155,7 @@ class AddTransactionComponent extends React.Component {
                                                         handleAmountChangeCallBack={this.handleAmountChange}
                                                         handleCreditChangeCallBack={this.handleCreditChange}
                                                         callbackIncrementor={this.incrementCount}
+                                                        amount={this.state.amount}
                                                         entityList={this.props.entityList}/>
                                 </View>);
 
@@ -180,7 +183,7 @@ class AddTransactionComponent extends React.Component {
                     {transactionElements.reverse()}
                 </View>
                 <View>
-                    <input className="pt-button pt-intent-success" type="submit"/>
+                    <button className="pt-button pt-icon-tick-circle pt-intent-success" type="submit">Submit</button>
                 </View>
             </form>
         );

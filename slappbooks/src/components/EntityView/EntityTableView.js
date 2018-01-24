@@ -1,8 +1,9 @@
-import React from "react";
+import React from 'react';
 import EntityTable from './EntityTable';
 
 /**
- * This represents the full entity view
+ *  This represents the full entity view. The view will be generated using @EntityTable components
+ *
  *  @author Malith Jayaweera
  */
 class EntityTableView extends React.Component {
@@ -18,7 +19,7 @@ class EntityTableView extends React.Component {
         let tableElements = [];
         for (let i = 0; i < this.props.entityList.length; i++) {
             let insertableTransactions = [];
-            var entityName = this.props.entityList[i];
+            let entityName = this.props.entityList[i];
             //eslint-disable-next-line
             insertableTransactions.push(...this.props.transactions.filter(transaction => {
                 return (transaction.entityName === entityName)
