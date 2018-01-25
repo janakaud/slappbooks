@@ -27,11 +27,16 @@ class AddTransactionComponent extends React.Component {
         }
     }
 
+    handleRefreshCallBack = () => {
+        this.props.handleRefreshCallback();
+    };
+
     submitForm = (e) => {
         e.preventDefault();
         let date = e.target.date.value;
         let notes = e.target.notes.value;
         let cheque = e.target.cheque.value;
+        let voucher = e.target.voucher.value;
         let count = e.target.amount.length === undefined ? 1 : e.target.amount.length;
         let amount = [];
         let entity = [];
@@ -80,6 +85,7 @@ class AddTransactionComponent extends React.Component {
             transaction.date = date;
             transaction.notes = notes;
             transaction.checkNo = cheque;
+            transaction.voucherNo = voucher;
             transaction.entityName = entity[index];
             transaction.isCredit = credit[index];
             transaction.amount = amount[index];
@@ -116,7 +122,7 @@ class AddTransactionComponent extends React.Component {
                 amount: 0
             });
         }
-
+        this.handleRefreshCallBack();
     };
 
     getEntityDefaultCurrency = (entity) => {

@@ -22,7 +22,12 @@ class AddEntityComponent extends React.Component {
             transactionService.createEntity(entity, currency, entityType);
             OurToaster.show({message: "Entity Added Successfully!"});
             this.render();
+            this.handleRefreshCallBack();
         }
+    };
+
+    handleRefreshCallBack = () => {
+        this.props.handleRefreshCallback();
     };
 
     render() {

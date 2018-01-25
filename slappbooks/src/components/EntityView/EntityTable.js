@@ -26,13 +26,16 @@ class EntityTable extends React.Component {
             setId: '',
             clicked: false,
             updateTransactions: [],
-            month: moment().startOf("month").format('MMMM'),
-            year: moment().startOf("month").format('YYYY'),
+            month: moment().startOf("month").format('MM'),
+            year: moment().startOf("month").format('YYYY')
         };
     }
 
     onRowClick = (state, rowInfo, column, instance) => {
         return {
+            style: {
+                fontWeight: rowInfo !== undefined &&  rowInfo.row.notes === 'Balance Brought Forward' ? 'bold' : 'normal'
+            },
             onClick: e => {
                 this.setState({
                     setId: rowInfo.row.setId,
@@ -75,7 +78,8 @@ class EntityTable extends React.Component {
         transactionService.getTransactions(this.state.entityName, 0, 5, [], [],month, year, (res) => {
             let values = res.data.rows;
             values.forEach(key => {
-                key.amount = key.isCredit ? "(" + parseFloat(key.amount) + ")" : parseFloat(key.amount);
+                key.amount = key.amount.toLocaleString();
+                key.amount = key.isCredit ? "(" + (key.amount) + ")" : (key.amount);
                 key.date = moment(key.date).format('YYYY-MM-DD');
             });
             this.setState({
@@ -84,6 +88,10 @@ class EntityTable extends React.Component {
                 loading: false
             })
         });
+    };
+
+    initialize = () => {
+      this.refresh(this.state.month, this.state.year);
     };
 
     handleMonthChange = (event) => {
@@ -100,10 +108,14 @@ class EntityTable extends React.Component {
         this.refresh(this.state.month, event.target.value);
     };
 
+    handleRefresh = () => {
+        this.props.handleRefreshCallback();
+    };
+
     render() {
         return (
             <div className={styles.visible}>
-                <UpdateView handleCloseCallback={this.handleClose} clickCallback={this.clickCallBack} isOpen={this.state.isOpen} setId={this.state.setId} clicked={this.state.clicked} entityList={this.props.entityList}/>
+                <UpdateView handleRefreshCallback={this.handleRefresh} handleCloseCallback={this.handleClose} clickCallback={this.clickCallBack} isOpen={this.state.isOpen} setId={this.state.setId} clicked={this.state.clicked} entityList={this.props.entityList}/>
                 <div className="pt-card pt-elevation-3">
                     <View auto style={{
                         flexDirection: 'row-inverse',
@@ -118,18 +130,18 @@ class EntityTable extends React.Component {
                             <label className="pt-label pt-inline" htmlFor="month">
                                 <div className="pt-select pt-inline">
                                     <select ref="month" defaultValue={this.state.month} onChange={this.handleMonthChange} name="month">
-                                        <option value={"January"}>January</option>
-                                        <option value={"February"}>February</option>
-                                        <option value={"March"}>March</option>
-                                        <option value={"April"}>April</option>
-                                        <option value={"May"}>May</option>
-                                        <option value={"June"}>June</option>
-                                        <option value={"July"}>July</option>
-                                        <option value={"August"}>August</option>
-                                        <option value={"September"}>September</option>
-                                        <option value={"October"}>October</option>
-                                        <option value={"November"}>November</option>
-                                        <option value={"December"}>December</option>
+                                        <option value={"01"}>January</option>
+                                        <option value={"02"}>February</option>
+                                        <option value={"03"}>March</option>
+                                        <option value={"04"}>April</option>
+                                        <option value={"05"}>May</option>
+                                        <option value={"06"}>June</option>
+                                        <option value={"07"}>July</option>
+                                        <option value={"08"}>August</option>
+                                        <option value={"09"}>September</option>
+                                        <option value={"10"}>October</option>
+                                        <option value={"11"}>November</option>
+                                        <option value={"12"}>December</option>
                                     </select>
                                 </div>
                             </label>
@@ -181,7 +193,8 @@ class EntityTable extends React.Component {
                                 {
                                     Header: 'Amount',
                                     maxWidth: 300,
-                                    accessor: "amount"
+                                    accessor: "amount",
+                                    Cell: props =>(<span className='float-right'>{props.value}</span>)
                                 },
                                 {
                                     Header: "setId",
@@ -205,8 +218,10 @@ class EntityTable extends React.Component {
                         transactionService.getTransactions(this.state.entityName, state.page, state.pageSize, state.sorted, state.filtered, this.state.month, this.state.year, (res) => {
                             let values = res.data.rows;
                             values.forEach(key => {
-                                key.amount = key.isCredit ? "(" + parseFloat(key.amount) + ")" : parseFloat(key.amount);
+                                key.amount = key.amount.toLocaleString();
+                                key.amount = key.isCredit ? "(" + (key.amount) + ")" : (key.amount);
                                 key.date = moment(key.date).format('YYYY-MM-DD');
+                                key.reconcile = key.reconcile === 1 ? "Y" : "N";
                             });
                             this.setState({
                                 data: values,

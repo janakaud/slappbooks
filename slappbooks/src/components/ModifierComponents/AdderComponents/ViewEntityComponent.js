@@ -21,6 +21,10 @@ class ViewEntityComponent extends React.Component {
         }
     }
 
+    handleRefreshCallBack = () => {
+        this.props.handleRefreshCallback();
+    };
+
     closeConfirmation = () => {
         this.setState({
             isConfirmationOpen: false
@@ -54,6 +58,7 @@ class ViewEntityComponent extends React.Component {
         transactionService.deleteEntity(this.state.entityName);
         OurToaster.show({message: "Entity Deleted Successfully!"});
         this.closeConfirmation();
+        this.handleRefreshCallBack();
     };
 
     entityListSelect() {

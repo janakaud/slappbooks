@@ -11,9 +11,19 @@ class EntityTableView extends React.Component {
         super(props);
         this.state = {
             transactionList: this.props.transactions,
-            entityList: this.props.entityList
-        }
+            entityList: this.props.entityList,
+        };
+        this.child = [];
     }
+
+    refresh = () => {
+        setTimeout( () => {
+            this.child.forEach(child => {
+            child.initialize();
+            });
+        }, 2000);
+
+    };
 
     render() {
         let tableElements = [];
@@ -24,7 +34,7 @@ class EntityTableView extends React.Component {
             insertableTransactions.push(...this.props.transactions.filter(transaction => {
                 return (transaction.entityName === entityName)
             }));
-            tableElements.push(<EntityTable transactions={insertableTransactions} entityName={entityName} entityList={this.props.entityList} key={i}/>);
+            tableElements.push(<EntityTable ref={instance => { this.child.push(instance); }} handleRefreshCallback={this.refresh} transactions={insertableTransactions} entityName={entityName} entityList={this.props.entityList} key={i}/>);
         }
         return(<div>{tableElements}</div>);
     }

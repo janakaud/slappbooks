@@ -32,10 +32,12 @@ class UpdateView extends React.Component {
     };
 
     handleSuperClose = () => {
-        this.handleClose();
         this.closeConfirmation();
     };
 
+    handleRefresh = () => {
+        this.props.handleRefreshCallback();
+    };
 
     generateDialogView = () => {
         if(this.props.isOpen  && this.props.clicked) {
@@ -54,21 +56,21 @@ class UpdateView extends React.Component {
     updateTransaction = () => {
         let transactions = this.state.updateTransactions.slice();
         transactions.forEach(transaction => {
-            transaction.isCredit = transaction.isCredit === "CR";
             transaction.setId = this.props.setId;
         });
-        console.log(transactions);
         transactionService.updateTransaction(transactions);
         this.handleClose();
+        this.handleRefresh();
     };
 
     deleteTransaction = () => {
         transactionService.deleteTransaction(this.props.setId);
         this.closeConfirmation();
-        this.handleClose();
+        this.handleRefresh();
     };
 
     openConfirmation = () => {
+        this.handleClose();
         this.setState({
             isConfirmationOpen: true
         });

@@ -4,7 +4,6 @@ import {NumericInput} from '@blueprintjs/core'
 
 /**
  * This represents an add transaction row
- *
  * @author Malith Jayaweera
  */
 class TransactionBasicRow extends React.Component {
@@ -63,7 +62,7 @@ class TransactionBasicRow extends React.Component {
                 alignItems: 'stretch',
                 justifyContent: 'left'
             }}>
-                <View column width="110px">
+                <View column width="125px">
                     <label className="pt-label pt-inline" htmlFor="entity">
                         Entity
                         <div className="pt-select pt-inline">

@@ -66,13 +66,15 @@ class ModifierView extends React.Component {
         })
     };
 
+    handleRefreshCallBack = () => {
+        this.props.handleRefreshCallback();
+    };
+
     render() {
         return (
             <div>
-                <div className="topnav">
-                    <a className="active" href="#Slappbooks">Slappbooks</a>
-                </div>
                <ConversionView handleCloseCallBack={this.handleCloseCallBack}
+                               handleRefreshCallback={this.handleRefreshCallBack}
                                fromCurrencies={this.state.fromCurrencies}
                                toCurrencies={this.state.toCurrencies}
                                updatableTransactions={this.state.updatableTransactions}
@@ -87,15 +89,16 @@ class ModifierView extends React.Component {
                                                          handleEntityCallBack={this.handleEntityList}
                                                          handleUpdatableTransactions={this.handleUpdatableTransactions}
                                                          handleAmountCallBack={this.handleAmountCallBack}
+                                                         handleRefreshCallback={this.handleRefreshCallBack}
                                                          entityList={this.props.entityList}
                                                          entryCount={this.props.entryCount}
                                                          entityObjects={this.props.entityObjects}/>
                             }/>
                             <Tab2 id="addEntity" title="Add Entity" panel={
-                                <AddEntityComponent/>
+                                <AddEntityComponent handleRefreshCallback={this.handleRefreshCallBack}/>
                             }/>
                             <Tab2 id="viewEntity" title="View Entity" panel={
-                                <ViewEntityComponent entityObjects={this.props.entityObjects}/>
+                                <ViewEntityComponent handleRefreshCallback={this.handleRefreshCallBack} entityObjects={this.props.entityObjects}/>
                             }/>
                         </Tabs2>
                     </div>

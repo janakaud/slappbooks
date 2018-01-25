@@ -49,13 +49,13 @@ class TransactionFullRow extends React.Component {
                 <TransactionBasicRow handleEntityChangeCallBack={this.props.handleEntityChangeCallBack}
                                    handleAmountChangeCallBack={this.props.handleAmountChangeCallBack}
                                    handleCreditChangeCallBack={this.props.handleCreditChangeCallBack} amount={this.props.amount} key={0} entityList={this.props.entityList}/>
-                <View column width="210px">
+                <View column width="200px">
                     <DatePicker name={"date"} dateFormat="YYYY-MM-DD" placeholderText={"MM-DD-YYYY"} selected={this.state.startDate} className={"pt-input on-top pt-round pt-datepicker-footer"}
                                 onChange={this.handleChange}
                     />;
                 </View>
-                <View column width="120px">
-                    <View column width="110px">
+                <View column width="310px">
+                    <View column width="300px">
                         <input className={"pt-input pt-round pt-fill"} type="text" placeholder="Notes" name="notes" />
                     </View>
                     <View column width="10px">
@@ -64,6 +64,13 @@ class TransactionFullRow extends React.Component {
                 <View column width="120px">
                     <View column width="110px">
                         <input className={"pt-input pt-round pt-fill"} type="text" placeholder="Cheque No" name="cheque" />
+                    </View>
+                    <View column width="10px">
+                    </View>
+                </View>
+                <View column width="120px">
+                    <View column width="110px">
+                        <input className={"pt-input pt-round pt-fill"} type="text" placeholder="Voucher No" name="voucher" />
                     </View>
                     <View column width="10px">
                     </View>

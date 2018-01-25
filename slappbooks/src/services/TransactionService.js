@@ -8,7 +8,7 @@ import axios from "axios";
 class TransactionService {
 
     constructor(){
-        this.baseURL = "https://pvygbjr02j.execute-api.us-east-1.amazonaws.com/Prod";
+        this.baseURL = process.env.REACT_APP_API_HOST;
     }
 
     get(url = this.baseURL, params = {}) {
@@ -149,6 +149,14 @@ class TransactionService {
                     return null;
                 }
             });
+    }
+
+    getTrialBalance(spotRate, handleReportResults) {
+        let url = this.baseURL + "/getTrialBalance";
+        let postObject = {spotRate: spotRate, defaultCurrency: process.env.REACT_APP_DEFAULT_CURRENCY};
+        return TransactionService.post(url, postObject)
+            .then(response => handleReportResults(response))
+            .catch(response => console.log(response));
     }
 }
 
