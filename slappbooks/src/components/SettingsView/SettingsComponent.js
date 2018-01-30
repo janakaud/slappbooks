@@ -33,7 +33,7 @@ class SettingsComponent extends React.Component {
     render() {
         return(
             <div className={"pt-card full-height"}>
-                <form onSubmit={this.submitSettings}>
+                <form onSubmit={this.submitSettings} className={"relativePosition"}>
                     <View auto style={{
                         flexDirection: 'row-inverse',
                         padding: 0.2,
