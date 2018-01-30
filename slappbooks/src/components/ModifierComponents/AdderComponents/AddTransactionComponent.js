@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import React from 'react';
 import View from 'react-flexbox';
 import md5 from 'md5';
@@ -115,8 +121,11 @@ class AddTransactionComponent extends React.Component {
         });
 
         if (!isCurrencyDifferent) {
-            transactionService.createTransaction(transactions);
-            OurToaster.show({message: "Transaction Added Successfully!"});
+            transactionService.createTransaction(transactions, () => {
+                OurToaster.show({message: "Transaction Added Successfully!"});
+            }, (error) => {
+                OurToaster.show({message: "Error while adding a transaction due to : " + error.message});
+            });
             this.setState({
                 entryCount: 0,
                 amount: 0

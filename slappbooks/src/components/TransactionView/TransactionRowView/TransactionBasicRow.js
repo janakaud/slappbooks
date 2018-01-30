@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import React from 'react';
 import View from 'react-flexbox'
 import {NumericInput} from '@blueprintjs/core'
@@ -62,7 +68,7 @@ class TransactionBasicRow extends React.Component {
                 alignItems: 'stretch',
                 justifyContent: 'left'
             }}>
-                <View column width="125px">
+                <View column width="">
                     <label className="pt-label pt-inline" htmlFor="entity">
                         Entity
                         <div className="pt-select pt-inline">

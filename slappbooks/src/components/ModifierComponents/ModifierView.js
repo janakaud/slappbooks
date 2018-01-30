@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import React from 'react';
 import {Tab2, Tabs2} from '@blueprintjs/core';
 import AddEntityComponent from './AdderComponents/AddEntityComponent';
@@ -81,7 +87,7 @@ class ModifierView extends React.Component {
                                isCurrencyDifferent={this.state.isCurrencyDifferent}
                                entityList={this.state.entities}
                                amount={this.state.amount}/>
-                <div className="pt-card pt-elevation-1 pt-interactive">
+                <div className="pt-card pt-elevation-1">
                     <div className={"relativePosition"}>
                         <Tabs2 id="Tabs2Example" onChange={this.handleTabChange}>
                             <Tab2 id="addTransaction" title="Add Transaction" panel={

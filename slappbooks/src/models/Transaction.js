@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 /**
  * This represents a transaction of the double entry system
  *

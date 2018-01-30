@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import React from 'react';
 import {Button, Toaster, Position, Intent, Dialog} from '@blueprintjs/core';
 import currencyService from '../../../services/CurrencyService';
@@ -27,6 +33,10 @@ class ConversionView  extends React.Component {
             updatableTransactions: this.props.updatableTransactions
         };
     }
+
+    handleRefreshCallBack = () => {
+        this.props.handleRefreshCallback();
+    };
 
     handleClose = () => {
         this.props.handleCloseCallBack();

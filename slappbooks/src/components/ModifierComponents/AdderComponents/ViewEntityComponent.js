@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import React from 'react';
 import View from 'react-flexbox';
 import {Intent, Position, Toaster, Button, Dialog} from '@blueprintjs/core';
@@ -29,6 +35,10 @@ class ViewEntityComponent extends React.Component {
         this.setState({
             isConfirmationOpen: false
         });
+    };
+
+    handleRefreshCall = () => {
+        this.props.handleRefreshCallback();
     };
 
     openConfirmation = () => {
@@ -99,7 +109,7 @@ class ViewEntityComponent extends React.Component {
                         alignItems: 'stretch',
                         justifyContent: 'left'
                     }}>
-                        <View column width="110px">
+                        <View column width="">
                             <label className="pt-label pt-inline"  htmlFor={"entity"}>
                                 Entity
                                 <div className="pt-select">

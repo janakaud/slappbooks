@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import React from 'react';
 import View from 'react-flexbox';
 import {Intent, Position, Toaster} from '@blueprintjs/core';
@@ -19,8 +25,11 @@ class AddEntityComponent extends React.Component {
         if(entity === '') {
             OurToaster.show({message: "Entity Name Cannot be Empty!"});
         } else {
-            transactionService.createEntity(entity, currency, entityType);
-            OurToaster.show({message: "Entity Added Successfully!"});
+            transactionService.createEntity(entity, currency, entityType, () => {
+                OurToaster.show({message: "Entity Added Successfully!"});
+            }, (error) => {
+                OurToaster.show({message: "Error while adding entity due to : " + error.message});
+            });
             this.render();
             this.handleRefreshCallBack();
         }

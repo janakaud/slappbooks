@@ -1,5 +1,11 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import React from 'react';
-import {FocusStyleManager} from '@blueprintjs/core';
+import {FocusStyleManager, Toaster, Position, Intent} from '@blueprintjs/core';
 import Entity from "../../models/Entity";
 import EntityTableView from "../EntityView/EntityTableView";
 import ModifierView from "../ModifierComponents/ModifierView";
@@ -35,6 +41,8 @@ class BodyComponent extends React.Component {
                 entityList : entityNames,
                 entityObjects : entityObjects
             });
+        }, (error) => {
+            OurToaster.show({message: "Error while loading entity names due to : " + error.message});
         });
     };
 
@@ -54,3 +62,9 @@ class BodyComponent extends React.Component {
 }
 
 export default BodyComponent;
+
+export const OurToaster = Toaster.create({
+    className: "panel align-lower",
+    position: Position.TOP_RIGHT,
+    intent: Intent.DANGER
+});

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import axios from "axios";
 
 /**
@@ -8,7 +14,15 @@ import axios from "axios";
 class TransactionService {
 
     constructor(){
-        this.baseURL = process.env.REACT_APP_API_HOST;
+        this.baseURL = localStorage.getItem('REACT_APP_API') || process.env.REACT_APP_API_HOST;
+    }
+
+    setUrl(url) {
+        this.baseURL = url;
+    }
+
+    getUrl() {
+        return this.baseURL;
     }
 
     get(url = this.baseURL, params = {}) {
@@ -83,30 +97,33 @@ class TransactionService {
             });
     }
 
-    createTransaction(transactions) {
+    createTransaction(transactions, handleSuccess, handleError) {
         let transactionsToCommit = [];
         transactions.forEach(transaction => {
             transactionsToCommit.push(transaction.getTransaction());
         });
 
         let url = this.baseURL + "/addTransaction";
+        console.log(url);
+        console.log(transactionsToCommit);
         return TransactionService.post(url, transactionsToCommit)
-            .then(response => response.data)
+            .then(response => handleSuccess(response))
             .then(data => {
                 if(!data.ERROR) {
                     return data;
                 } else {
                     return null;
                 }
-            });
+            })
+            .catch(error => handleError(error));
     }
 
-    getEntity(handleRetrievedEntities) {
+    getEntity(handleRetrievedEntities, handleError) {
         let url = this.baseURL + "/getEntityList";
         return this.get(url)
             .then(response => handleRetrievedEntities(response))
-            .catch(response => {
-                console.log(response);
+            .catch(error => {
+                handleError(error);
             });
     }
 
@@ -136,11 +153,11 @@ class TransactionService {
             .catch(response => console.log(response));
     }
 
-    createEntity(entityName, defaultCurrency, entityType) {
+    createEntity(entityName, defaultCurrency, entityType, success, failure) {
         let entityObject = {entity: entityName, currency: defaultCurrency, entityType: entityType};
         let url = this.baseURL + "/createEntity";
         return TransactionService.post(url, entityObject)
-            .then(response => response.data)
+            .then(response => success(response))
             .then(data => {
                 console.log(data);
                 if(!data.ERROR) {
@@ -148,7 +165,8 @@ class TransactionService {
                 } else {
                     return null;
                 }
-            });
+            })
+            .catch(error => failure(error));
     }
 
     getTrialBalance(spotRate, handleReportResults) {
