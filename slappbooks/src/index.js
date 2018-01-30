@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018 SLAppForge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ *
+ * SLAppForge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

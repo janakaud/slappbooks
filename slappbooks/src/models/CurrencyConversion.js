@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ * Copyright (c) 2018 SLAppForge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
  *
- * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * SLAppForge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
 /**

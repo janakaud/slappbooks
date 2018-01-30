@@ -1,9 +1,8 @@
 /*
- * Copyright (c) 2018 Slappforge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
+ * Copyright (c) 2018 SLAppForge Lanka Private Ltd. (https://www.slappforge.com). All Rights Reserved.
  *
- * Slappforge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * SLAppForge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-
 import React from 'react';
 import View from 'react-flexbox'
 import {NumericInput} from '@blueprintjs/core'
