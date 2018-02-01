@@ -27,11 +27,10 @@ class AddEntityComponent extends React.Component {
         } else {
             transactionService.createEntity(entity, currency, entityType, () => {
                 OurToaster.show({message: "Entity Added Successfully!"});
+                this.handleRefreshCallBack();
             }, (error) => {
                 OurToaster.show({message: "Error while adding entity due to : " + error.message});
             });
-            this.render();
-            this.handleRefreshCallBack();
         }
     };
 

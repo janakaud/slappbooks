@@ -121,8 +121,9 @@ class AddTransactionComponent extends React.Component {
         });
 
         if (!isCurrencyDifferent) {
-            transactionService.createTransaction(transactions, () => {
+            transactionService.createTransaction(transactions, (response) => {
                 OurToaster.show({message: "Transaction Added Successfully!"});
+                this.handleRefreshCallBack();
             }, (error) => {
                 OurToaster.show({message: "Error while adding a transaction due to : " + error.message});
             });
@@ -131,7 +132,6 @@ class AddTransactionComponent extends React.Component {
                 amount: 0
             });
         }
-        this.handleRefreshCallBack();
     };
 
     getEntityDefaultCurrency = (entity) => {

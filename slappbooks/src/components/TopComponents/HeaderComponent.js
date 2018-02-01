@@ -18,10 +18,10 @@ class HeaderComponent extends React.Component {
             <div className="topnav">
                 <a className="active" href="/">Slappbooks</a>
                 <div className={"float-right"}>
-                    <a href={"reports"}>Reports</a>
+                    <a href={"/reports"}>Reports</a>
                 </div>
                 <div className={"float-right"}>
-                    <a href={"settings"}><Icon iconName="pt-icon-settings" /></a>
+                    <a href={"/settings"}><Icon iconName="pt-icon-settings" /></a>
                 </div>
             </div>
         );

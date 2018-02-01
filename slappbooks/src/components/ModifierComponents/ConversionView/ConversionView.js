@@ -92,13 +92,16 @@ class ConversionView  extends React.Component {
             transaction.amount = amounts[index];
         });
 
-        transactionService.createTransactionWithCurrencyDifference(transactions, conversions)
-        //transactionService.createTransaction(transactions);
-        OurToaster.show({message: "Transaction Added Successfully!"});
+        transactionService.createTransactionWithCurrencyDifference(transactions, conversions, () => {
+            OurToaster.show({message: "Transaction Added Successfully!"});
+            this.handleRefreshCallBack();
+        }, (error) => {
+            OurToaster.show({message: "Transaction could not be added due to : " + error.message});
+        });
         this.setState({
             entryCount: 0,
             amountValue: ''
-        })
+        });
     };
 
     render() {

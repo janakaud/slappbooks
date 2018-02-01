@@ -3,6 +3,7 @@
  *
  * SLAppForge PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
+
 import React from 'react';
 import View from 'react-flexbox'
 import {NumericInput} from '@blueprintjs/core'

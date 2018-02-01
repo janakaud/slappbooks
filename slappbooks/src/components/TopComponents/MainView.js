@@ -19,8 +19,8 @@ const MainView = () => (
     <main>
         <Switch>
             <Route exact path='/' component={BodyComponent}/>
-            <Route path='/reports' component={ReportComponent}/>
-            <Route path='/settings' component={SettingsComponent} />
+            <Route exact path='/reports' component={ReportComponent}/>
+            <Route exact path='/settings' component={SettingsComponent} />
         </Switch>
     </main>
 );

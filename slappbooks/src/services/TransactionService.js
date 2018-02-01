@@ -33,7 +33,7 @@ class TransactionService {
         return axios.post(url, params)
     }
 
-    createTransactionWithCurrencyDifference(transactions, conversions) {
+    createTransactionWithCurrencyDifference(transactions, conversions, onSuccess, onFailure) {
         let transactionsToCommit = [];
         transactions.forEach(transaction => {
             transactionsToCommit.push(transaction.getTransaction());
@@ -46,55 +46,31 @@ class TransactionService {
 
         let url = this.baseURL + "/createTransactionWithCurrencyDifference";
         return TransactionService.post(url, postObject)
-            .then(response => response.data)
-            .then(data => {
-                if(!data.ERROR) {
-                    return data;
-                } else {
-                    return null;
-                }
-            });
+            .then(response => onSuccess(response))
+            .catch(error => onFailure(error));
     }
 
-    updateTransaction(transactions) {
+    updateTransaction(transactions, handleSuccess, handleFailure) {
         let url = this.baseURL + "/updateTransaction";
         return TransactionService.post(url, transactions)
-            .then(response => response.data)
-            .then(data => {
-                if(!data.ERROR) {
-                    return data;
-                } else {
-                    return null;
-                }
-            });
+            .then(response => handleSuccess(response))
+            .catch(error => handleFailure(error));
     };
 
-    deleteEntity(entityName) {
+    deleteEntity(entityName, onSuccess, onFailure) {
         let postObject = {entityName: entityName};
         let url = this.baseURL + "/deleteEntity";
         return TransactionService.post(url, postObject)
-            .then(response => response.data)
-            .then(data => {
-                if(!data.ERROR) {
-                    return data;
-                } else {
-                    return null;
-                }
-            });
+            .then(response => onSuccess(response))
+            .catch(error => onFailure(error));
     }
 
-    deleteTransaction(setId) {
+    deleteTransaction(setId, handleSuccess, handleError) {
         let postObject = {setId: setId};
         let url = this.baseURL + "/deleteTransaction";
-        return TransactionService.post(url, postObject)
-            .then(response => response.data)
-            .then(data => {
-                if(!data.ERROR) {
-                    return data;
-                } else {
-                    return null;
-                }
-            });
+        return TransactionService.post(url, JSON.stringify(postObject))
+            .then(response => handleSuccess(response))
+            .catch(error => handleError(error));
     }
 
     createTransaction(transactions, handleSuccess, handleError) {
@@ -104,17 +80,8 @@ class TransactionService {
         });
 
         let url = this.baseURL + "/addTransaction";
-        console.log(url);
-        console.log(transactionsToCommit);
-        return TransactionService.post(url, transactionsToCommit)
+        return TransactionService.post(url, JSON.stringify(transactionsToCommit))
             .then(response => handleSuccess(response))
-            .then(data => {
-                if(!data.ERROR) {
-                    return data;
-                } else {
-                    return null;
-                }
-            })
             .catch(error => handleError(error));
     }
 
@@ -122,9 +89,7 @@ class TransactionService {
         let url = this.baseURL + "/getEntityList";
         return this.get(url)
             .then(response => handleRetrievedEntities(response))
-            .catch(error => {
-                handleError(error);
-            });
+            .catch(error => handleError(error));
     }
 
     getTransactions(entity, page, pageSize, sorted, filtered, month, year, handleRetrievedTransactions) {
@@ -158,14 +123,6 @@ class TransactionService {
         let url = this.baseURL + "/createEntity";
         return TransactionService.post(url, entityObject)
             .then(response => success(response))
-            .then(data => {
-                console.log(data);
-                if(!data.ERROR) {
-                    return data;
-                } else {
-                    return null;
-                }
-            })
             .catch(error => failure(error));
     }
 

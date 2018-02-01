@@ -27,7 +27,7 @@ class EntityTableView extends React.Component {
             this.child.forEach(child => {
             child.initialize();
             });
-        }, 2000);
+        }, 0);
 
     };
 

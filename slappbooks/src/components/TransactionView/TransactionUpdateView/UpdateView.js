@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import {Button, Dialog} from '@blueprintjs/core';
+import {Button, Dialog, Intent, Position, Toaster} from '@blueprintjs/core';
 import UpdateViewBody from './UpdateViewBody';
 import transactionService from '../../../services/TransactionService';
 
@@ -64,15 +64,23 @@ class UpdateView extends React.Component {
         transactions.forEach(transaction => {
             transaction.setId = this.props.setId;
         });
-        transactionService.updateTransaction(transactions);
+        transactionService.updateTransaction(transactions, () => {
+            OurToaster.show({message: "Successfully updated the transaction with setId " + this.props.setId});
+        }, (error) => {
+            OurToaster.show({message: "Could not update the transaction due to : " + error.message});
+        });
         this.handleClose();
         this.handleRefresh();
     };
 
     deleteTransaction = () => {
-        transactionService.deleteTransaction(this.props.setId);
+        transactionService.deleteTransaction(this.props.setId, () => {
+            OurToaster.show({message: "Successfully deleted the transaction with setId " + this.props.setId});
+            this.handleRefresh();
+        }, (error) => {
+            OurToaster.show({message: "Could not delete the transaction due to : " + error.message});
+        });
         this.closeConfirmation();
-        this.handleRefresh();
     };
 
     openConfirmation = () => {
@@ -166,3 +174,9 @@ class UpdateView extends React.Component {
 }
 
 export default UpdateView;
+
+export const OurToaster = Toaster.create({
+    className: "panel align-lower",
+    position: Position.TOP_RIGHT,
+    intent: Intent.PRIMARY
+});

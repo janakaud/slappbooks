@@ -49,9 +49,7 @@ class UpdateViewBody extends React.Component {
                 {content}
             </div>
         );
-
     }
-
 }
 
 export default UpdateViewBody;

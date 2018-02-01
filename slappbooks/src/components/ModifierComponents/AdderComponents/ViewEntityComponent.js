@@ -65,10 +65,13 @@ class ViewEntityComponent extends React.Component {
         this.setState({
            isConfirmationOpen: true
         });
-        transactionService.deleteEntity(this.state.entityName);
-        OurToaster.show({message: "Entity Deleted Successfully!"});
+        transactionService.deleteEntity(this.state.entityName, () => {
+            OurToaster.show({message: "Entity Deleted Successfully!"});
+            this.handleRefreshCallBack();
+        }, (error) => {
+            OurToaster.show({message: "Could not delete the entity due to : " + error.message});
+        });
         this.closeConfirmation();
-        this.handleRefreshCallBack();
     };
 
     entityListSelect() {
