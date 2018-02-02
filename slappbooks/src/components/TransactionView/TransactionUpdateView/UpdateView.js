@@ -66,11 +66,11 @@ class UpdateView extends React.Component {
         });
         transactionService.updateTransaction(transactions, () => {
             OurToaster.show({message: "Successfully updated the transaction with setId " + this.props.setId});
+            this.handleRefresh();
         }, (error) => {
             OurToaster.show({message: "Could not update the transaction due to : " + error.message});
         });
         this.handleClose();
-        this.handleRefresh();
     };
 
     deleteTransaction = () => {
